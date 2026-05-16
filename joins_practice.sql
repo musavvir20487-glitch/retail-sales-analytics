@@ -1,0 +1,329 @@
+-- ================================================
+-- SQL JOIN Practice Queries
+-- Author: Syed Musavvir Rehan
+-- Date: 16-05-2026
+-- Topics: JOIN practice - Interview style questions
+-- ================================================
+
+
+
+
+
+-- CREATE DATABASE IF NOT EXISTS joins_interview4;
+-- USE joins_interview4;
+
+-- CREATE TABLE directors (
+--   director_id  INT PRIMARY KEY,
+--   name         VARCHAR(50),
+--   nationality  VARCHAR(30),
+--   birth_year   INT
+-- );
+
+-- CREATE TABLE movies (
+--   movie_id     INT PRIMARY KEY,
+--   title        VARCHAR(80),
+--   director_id  INT,
+--   genre        VARCHAR(30),
+--   release_year INT,
+--   budget       DECIMAL(12,2),
+--   revenue      DECIMAL(12,2),
+--   rating       DECIMAL(3,1)
+-- );
+
+-- CREATE TABLE actors (
+--   actor_id     INT PRIMARY KEY,
+--   name         VARCHAR(50),
+--   nationality  VARCHAR(30),
+--   birth_year   INT,
+--   gender       VARCHAR(10)
+-- );
+
+-- CREATE TABLE movie_cast (
+--   cast_id      INT PRIMARY KEY,
+--   movie_id     INT,
+--   actor_id     INT,
+--   role_name    VARCHAR(50),
+--   is_lead      BOOLEAN
+-- );
+
+-- CREATE TABLE awards (
+--   award_id     INT PRIMARY KEY,
+--   movie_id     INT,
+--   actor_id     INT,
+--   award_name   VARCHAR(50),
+--   category     VARCHAR(40),
+--   year         INT,
+--   won          BOOLEAN
+-- );
+
+-- CREATE TABLE streaming (
+--   stream_id    INT PRIMARY KEY,
+--   movie_id     INT,
+--   platform     VARCHAR(30),
+--   added_date   DATE,
+--   monthly_views INT
+-- );
+
+-- CREATE TABLE reviews (
+--   review_id    INT PRIMARY KEY,
+--   movie_id     INT,
+--   reviewer     VARCHAR(50),
+--   score        DECIMAL(3,1),
+--   review_date  DATE,
+--   sentiment    VARCHAR(20)
+-- );
+
+-- INSERT INTO directors VALUES
+-- (1,  'Christopher Nolan',  'British',    1970),
+-- (2,  'Steven Spielberg',   'American',   1946),
+-- (3,  'Martin Scorsese',    'American',   1942),
+-- (4,  'Quentin Tarantino',  'American',   1963),
+-- (5,  'James Cameron',      'Canadian',   1954),
+-- (6,  'Ridley Scott',       'British',    1937),
+-- (7,  'David Fincher',      'American',   1962),
+-- (8,  'Denis Villeneuve',   'Canadian',   1967);
+
+-- INSERT INTO movies VALUES
+-- (1,  'Inception',          1, 'Sci-Fi',   2010, 160000000,  836000000,  8.8),
+-- (2,  'Interstellar',       1, 'Sci-Fi',   2014, 165000000,  701000000,  8.6),
+-- (3,  'The Dark Knight',    1, 'Action',   2008, 185000000,  1005000000, 9.0),
+-- (4,  'Jurassic Park',      2, 'Adventure',1993, 63000000,   1029000000, 8.1),
+-- (5,  'Schindlers List',    2, 'Drama',    1993, 22000000,   322000000,  8.9),
+-- (6,  'Goodfellas',         3, 'Crime',    1990, 25000000,   46000000,   8.7),
+-- (7,  'The Departed',       3, 'Crime',    2006, 90000000,   290000000,  8.5),
+-- (8,  'Pulp Fiction',       4, 'Crime',    1994, 8000000,    214000000,  8.9),
+-- (9,  'Django Unchained',   4, 'Western',  2012, 100000000,  425000000,  8.4),
+-- (10, 'Titanic',            5, 'Romance',  1997, 200000000,  2187000000, 7.8),
+-- (11, 'Avatar',             5, 'Sci-Fi',   2009, 237000000,  2923000000, 7.8),
+-- (12, 'Gladiator',          6, 'Action',   2000, 103000000,  460000000,  8.5),
+-- (13, 'The Martian',        6, 'Sci-Fi',   2015, 108000000,  630000000,  8.0),
+-- (14, 'Fight Club',         7, 'Drama',    1999, 63000000,   101000000,  8.8),
+-- (15, 'Gone Girl',          7, 'Thriller', 2014, 61000000,   369000000,  8.1),
+-- (16, 'Dune',               8, 'Sci-Fi',   2021, 165000000,  401000000,  8.0),
+-- (17, 'Arrival',            8, 'Sci-Fi',   2016, 47000000,   203000000,  7.9),
+-- (18, 'Blade Runner 2049',  8, 'Sci-Fi',   2017, 150000000,  260000000,  8.0),
+-- (19, 'The Aviator',        3, 'Drama',    2004, 110000000,  213000000,  7.5),
+-- (20, 'Saving Private Ryan',2, 'War',      1998, 70000000,   482000000,  8.6);
+
+-- INSERT INTO actors VALUES
+-- (1,  'Leonardo DiCaprio', 'American', 1974, 'Male'),
+-- (2,  'Tom Hanks',         'American', 1956, 'Male'),
+-- (3,  'Christian Bale',    'British',  1974, 'Male'),
+-- (4,  'Brad Pitt',         'American', 1963, 'Male'),
+-- (5,  'Matt Damon',        'American', 1970, 'Male'),
+-- (6,  'Cate Blanchett',    'Australian',1969,'Female'),
+-- (7,  'Meryl Streep',      'American', 1949, 'Female'),
+-- (8,  'Scarlett Johansson','American', 1984, 'Female'),
+-- (9,  'Morgan Freeman',    'American', 1937, 'Male'),
+-- (10, 'Heath Ledger',      'Australian',1979,'Male'),
+-- (11, 'Anne Hathaway',     'American', 1982, 'Female'),
+-- (12, 'Matthew McConaughey','American',1969, 'Male'),
+-- (13, 'Joaquin Phoenix',   'American', 1974, 'Male'),
+-- (14, 'Timothee Chalamet', 'American', 1995, 'Male'),
+-- (15, 'Zendaya',           'American', 1996, 'Female');
+
+-- INSERT INTO movie_cast VALUES
+-- (1,  1,  1,  'Cobb',           TRUE),
+-- (2,  1,  11, 'Ariadne',        FALSE),
+-- (3,  2,  1,  'Cooper',         TRUE),
+-- (4,  2,  12, 'Brand',          FALSE),
+-- (5,  3,  3,  'Bruce Wayne',    TRUE),
+-- (6,  3,  10, 'Joker',          TRUE),
+-- (7,  3,  9,  'Jim Gordon',     FALSE),
+-- (8,  4,  2,  'Dr Grant',       TRUE),
+-- (9,  5,  2,  'Schindler',      TRUE),
+-- (10, 6,  9,  'Sam Rothstein',  FALSE),
+-- (11, 7,  5,  'Billy Costigan', TRUE),
+-- (12, 8,  4,  'Vincent Vega',   TRUE),
+-- (13, 9,  13, 'Django',         TRUE),
+-- (14, 10, 1,  'Jack Dawson',    TRUE),
+-- (15, 11, 5,  'Jake Sully',     TRUE),
+-- (16, 12, 13, 'Maximus',        TRUE),
+-- (17, 13, 5,  'Mark Watney',    TRUE),
+-- (18, 14, 4,  'Tyler Durden',   TRUE),
+-- (19, 14, 9,  'The Narrator',   TRUE),
+-- (20, 15, 9,  'Nick Dunne',     TRUE),
+-- (21, 16, 14, 'Paul Atreides',  TRUE),
+-- (22, 16, 15, 'Chani',          TRUE),
+-- (23, 17, 8,  'Louise Banks',   TRUE),
+-- (24, 18, 13, 'K',              TRUE),
+-- (25, 19, 1,  'Howard Hughes',  TRUE),
+-- (26, 20, 2,  'Capt Miller',    TRUE),
+-- (27, 2,  11, 'Murph',          FALSE),
+-- (28, 1,  9,  'Miles',          FALSE);
+
+-- INSERT INTO awards VALUES
+-- (1,  3,  10, 'Academy Award',  'Best Supporting Actor', 2009, TRUE),
+-- (2,  5,  2,  'Academy Award',  'Best Actor',            1994, FALSE),
+-- (3,  6,  9,  'Golden Globe',   'Best Supporting Actor', 1991, FALSE),
+-- (4,  7,  5,  'Academy Award',  'Best Picture',          2007, TRUE),
+-- (5,  8,  4,  'Palme dOr',      'Best Film',             1994, TRUE),
+-- (6,  9,  13, 'Golden Globe',   'Best Actor',            2013, FALSE),
+-- (7,  10, 1,  'Academy Award',  'Best Picture',          1998, TRUE),
+-- (8,  11, 5,  'Golden Globe',   'Best Film',             2010, FALSE),
+-- (9,  12, 13, 'Academy Award',  'Best Actor',            2001, FALSE),
+-- (10, 14, 4,  'MTV Award',      'Best Performance',      2000, TRUE),
+-- (11, 16, 14, 'BAFTA',          'Best Actor',            2022, FALSE),
+-- (12, 19, 1,  'Golden Globe',   'Best Actor',            2005, FALSE),
+-- (13, 20, 2,  'Academy Award',  'Best Director',         1999, TRUE),
+-- (14, 1,  1,  'BAFTA',          'Best Actor',            2011, FALSE),
+-- (15, 2,  12, 'Saturn Award',   'Best Actor',            2015, TRUE);
+
+-- INSERT INTO streaming VALUES
+-- (1,  1,  'Netflix',    '2021-01-01', 2500000),
+-- (2,  2,  'Amazon',     '2020-06-01', 1800000),
+-- (3,  3,  'Netflix',    '2019-03-01', 3200000),
+-- (4,  4,  'Disney+',    '2020-11-01', 1500000),
+-- (5,  5,  'Amazon',     '2021-05-01', 900000),
+-- (6,  6,  'Netflix',    '2020-08-01', 700000),
+-- (7,  7,  'Amazon',     '2021-02-01', 850000),
+-- (8,  8,  'Netflix',    '2019-07-01', 1600000),
+-- (9,  9,  'Amazon',     '2020-04-01', 1200000),
+-- (10, 10, 'Disney+',    '2019-12-01', 2800000),
+-- (11, 11, 'Disney+',    '2020-01-01', 3500000),
+-- (12, 12, 'Amazon',     '2021-08-01', 1100000),
+-- (13, 13, 'Netflix',    '2020-09-01', 950000),
+-- (14, 14, 'Netflix',    '2019-10-01', 1400000),
+-- (15, 15, 'Amazon',     '2021-03-01', 800000),
+-- (16, 16, 'HBO Max',    '2022-01-01', 2100000),
+-- (17, 17, 'Amazon',     '2020-07-01', 750000),
+-- (18, 18, 'Netflix',    '2020-02-01', 680000),
+-- (19, 19, 'HBO Max',    '2021-11-01', 600000),
+-- (20, 20, 'Netflix',    '2019-06-01', 1300000);
+
+-- INSERT INTO reviews VALUES
+-- (1,  1,  'Roger Ebert',    9.0, '2010-07-20', 'Positive'),
+-- (2,  1,  'Peter Travers',  8.5, '2010-07-22', 'Positive'),
+-- (3,  2,  'Roger Ebert',    9.0, '2014-11-10', 'Positive'),
+-- (4,  3,  'Roger Ebert',    9.5, '2008-07-20', 'Positive'),
+-- (5,  3,  'Peter Travers',  9.0, '2008-07-21', 'Positive'),
+-- (6,  4,  'Janet Maslin',   8.0, '1993-06-15', 'Positive'),
+-- (7,  5,  'Roger Ebert',    9.5, '1993-12-20', 'Positive'),
+-- (8,  6,  'Roger Ebert',    9.0, '1990-09-19', 'Positive'),
+-- (9,  8,  'Roger Ebert',    9.0, '1994-10-14', 'Positive'),
+-- (10, 10, 'Roger Ebert',    8.0, '1997-12-19', 'Positive'),
+-- (11, 11, 'Peter Travers',  7.5, '2009-12-18', 'Neutral'),
+-- (12, 14, 'Roger Ebert',    9.0, '1999-10-15', 'Positive'),
+-- (13, 16, 'Peter Travers',  8.5, '2021-10-25', 'Positive'),
+-- (14, 18, 'Janet Maslin',   7.0, '2017-10-06', 'Neutral'),
+-- (15, 20, 'Roger Ebert',    9.0, '1998-07-24', 'Positive');
+-- select * from directors ; 
+select * from movies ; 
+select * from actors ; 
+select * from movie_cast ;
+select * from awards ; 
+-- select * from streaming ;
+select * from reviews ;
+---------
+-- select m.title as movie_title, d.name as directors_name, d.nationality,m.genre, m.rating
+-- from movies m join directors d on m.director_id = d.director_id 
+-- order by rating desc ;
+-------------
+-- select d.name, d.nationality  from directors d left join 
+-- movies m on d.director_id = m.director_id 
+-- where m.movie_id is null;
+--------------
+-- select m.title, a.name as actor_name, d.name as director_name , m.rating 
+-- from movies m join  movie_cast mc 
+-- on m.movie_id = mc.movie_id 
+-- join actors a on mc.actor_id = a.actor_id 
+-- join directors d on m.director_id = d.director_id 
+-- where mc.is_lead = true
+-- ORDER BY m.rating DESC ;
+-----
+-- select d.name, count(m.director_id) as total_movies, 
+-- round(avg(m.rating),2) as avg_ratng,
+--  sum(m.revenue) as total_revenue, 
+--  sum(m.budget) as total_budget
+-- from movies m join directors d on 
+-- m.director_id = d.director_id 
+-- group by d.name, m.director_id
+-- order by total_revenue desc ;
+----------
+-- select a.name as actor_name,d.nationality,count(mc.actor_id) as no_of_movies
+-- from movie_cast mc join movies m on 
+-- mc.movie_id = m.movie_id join directors d 
+-- on m.director_id = d.director_id join actors a 
+-- on mc.actor_id = a.actor_id 
+-- group by a.actor_id, a.name,d.nationality
+-- having count(mc.actor_id) > 2 
+-- order by no_of_movies desc
+---------
+-- select s.platform, count(s.movie_id) as no_of_movies, 
+-- sum(s.monthly_views) as total_monthly_views from streaming s 
+-- group by s.platform 
+-- order by total_monthly_views ;
+----------
+-- select m.title as movie_title,
+--  d.name as director_name,
+--  a.name as actor_name,
+--  ad.award_name as award_name,
+--  ad.category, ad.year 
+--  from awards ad join actors a 
+--  on ad.actor_id = a.actor_id 
+--  join movies m on ad.movie_id = m.movie_id 
+--  join directors d on m.director_id = d.director_id
+--  where ad.won = 1
+--  order by ad.year desc;
+-----------
+-- select * from (
+-- select m.title as movie_title, m.genre,
+-- d.name as director_name, m.revenue, 
+-- dense_rank() over (partition by m.genre order by m.revenue desc)
+-- as rnk from movies m join directors d 
+-- on m.director_id = d.director_id  ) 
+-- t where rnk <= 2
+--------
+-- with cte1 as (
+-- select d.name as director_name, sum(revenue) as total_revenue
+-- from directors d join movies m 
+-- on d.director_id = m.director_id 
+-- group by m.director_id , d.name) ,
+-- cte2 as (
+-- select director_name, total_revenue, 
+-- rank() over (order by total_revenue desc) as revenue_rank, 
+-- round(total_revenue/sum(total_revenue) over() *100,2 ) as revenue_pct 
+-- from cte1) 
+-- select * from cte2 order by revenue_rank;
+-----------
+-- WITH actor_movies AS (
+--     SELECT 
+--         a.actor_id,
+--         a.name           AS actor_name,
+--         COUNT(DISTINCT mc.movie_id) AS movie_count
+--     FROM actors a
+--     INNER JOIN movie_cast mc 
+--         ON a.actor_id = mc.actor_id
+--     GROUP BY a.actor_id, a.name
+-- ),
+-- actor_awards AS (
+--     SELECT 
+--         actor_id,
+--         COUNT(*)                          AS total_nominations,
+--         SUM(CASE WHEN won = TRUE THEN 1 ELSE 0 END) AS total_wins
+--     FROM awards
+--     GROUP BY actor_id
+-- ),
+-- actor_reviews AS (
+--     SELECT 
+--         mc.actor_id,
+--         ROUND(AVG(r.score), 2) AS avg_review_score
+--     FROM movie_cast mc
+--     INNER JOIN reviews r 
+--         ON mc.movie_id = r.movie_id
+--     GROUP BY mc.actor_id
+-- )
+-- SELECT 
+--     am.actor_name,
+--     am.movie_count,
+--     COALESCE(aw.total_nominations, 0) AS nominations,
+--     COALESCE(aw.total_wins, 0)        AS wins,
+--     COALESCE(ar.avg_review_score, 0)  AS avg_review_score
+-- FROM actor_movies am
+-- LEFT JOIN actor_awards aw 
+--     ON am.actor_id = aw.actor_id
+-- LEFT JOIN actor_reviews ar 
+--     ON am.actor_id = ar.actor_id
+-- ORDER BY wins DESC;
+
+
